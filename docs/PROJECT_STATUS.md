@@ -1,6 +1,6 @@
 # Project status
 
-Status: local host-tested foundation; publication pending; 2026-08-16.
+Status: public host-tested preview foundation; 2026-08-16.
 
 ## Proven
 
@@ -14,13 +14,14 @@ Status: local host-tested foundation; publication pending; 2026-08-16.
 - Inspection contexts carry opaque controller identity plus the selected session revision; results have no public constructor and bind to the exact context. Exact reselection remains current, while switching, returning to the chooser, fabrication, or cross-controller reuse suppresses the result.
 - Stored and deflated ZIP entries are independently expansion-limited; exact maximum, maximum-plus-one, forged-size, oversized manifest/signature, stream-position restoration, cross-product, digest-mismatched, noncanonical, extra-entry, empty-signature, and unknown-product cases are covered.
 - Thirty-one deterministic groups and source-policy checks pass without launching the UI or accessing hardware.
+- The independent public repository is published at <https://github.com/nbjelanovic/Limited-Underground-Firmware-Loader>; `main` is the default branch and GitHub detects Apache License 2.0.
 
 ## Not proven
 
 - No existing Trail inspection implementation has been migrated.
 - No Display loader provider or target manifest exists.
 - No UI file selection, project target provider, trusted signer, bundle admission, device match, USB, serial, Bluetooth, writer, readback, boot confirmation, rollback, recovery, installer, release signing, or physical acceptance exists here.
-- No remote repository or public package is configured.
+- No installer, signed binary release, update channel, or public firmware package is configured.
 
 ## Next gate
 
