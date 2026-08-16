@@ -16,7 +16,9 @@ Both providers are deliberately unavailable in this new shared shell:
 - Trail's accepted inspection-only implementation still lives in the OpenTrail repository and has not been migrated.
 - Display has no loader provider or target manifest yet.
 
-There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, signer, bundle-admission, or device-selection adapter in this repository.
+A product-bound offline inspector now accepts only a readable, seekable candidate stream containing exactly `manifest.json`, `image.bin`, and `manifest.sig`. Its context is minted with an opaque per-controller identity and the currently selected product-session revision; switching products, returning to the chooser, or presenting the result to another controller makes it stale. It verifies canonical manifest encoding, the exact `opentrail` or `opengauge` product key, bounded target metadata, image length and SHA-256, and a nonempty fixed-size signature field. Stored or deflated entries are permitted only inside the 20 MiB archive limit, and every decompressed entry is independently read through its exact maximum-plus-one boundary. The caller's stream position is restored on success and failure. The inspector does not trust the signature, admit a release, select a device, or enable the disabled UI operation. No file chooser is wired yet.
+
+There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, trusted signer, bundle-admission, or device-selection adapter in this repository.
 
 ## Why a separate repository
 
@@ -32,7 +34,7 @@ This builds the WPF application and runs the deterministic console acceptance su
 
 ## Remaining gates
 
-1. Freeze a versioned provider contract that imports only public, signed, project-owned target manifests.
+1. Freeze a versioned provider lifecycle that supplies project-owned target rules and independently configured signer trust to the shared inspector.
 2. Migrate the existing Trail inspection provider without weakening its privacy or fail-closed rules.
 3. Add a Display provider only after OpenGauge owns an accepted target manifest and compatibility boundary.
 4. Add signer trust, protected revocation, exact-device authority, writer, readback, boot confirmation, rollback, and recovery one gate at a time.

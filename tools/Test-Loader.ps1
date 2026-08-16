@@ -36,4 +36,4 @@ finally {
     }
 }
 
-Write-Host 'Shared firmware loader foundation validation passed.'
+Write-Host 'Shared firmware loader offline validation passed.'

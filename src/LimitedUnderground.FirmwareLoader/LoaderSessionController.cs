@@ -1,5 +1,24 @@
 namespace LimitedUnderground.FirmwareLoader;
 
+public sealed class LoaderBundleInspectionContext
+{
+    internal LoaderBundleInspectionContext(
+        object ownerToken,
+        ulong sessionRevision,
+        string productKey)
+    {
+        OwnerToken = ownerToken;
+        SessionRevision = sessionRevision;
+        ProductKey = productKey;
+    }
+
+    public ulong SessionRevision { get; }
+
+    public string ProductKey { get; }
+
+    internal object OwnerToken { get; }
+}
+
 public sealed record LoaderSessionSnapshot(
     ulong Revision,
     LoaderProductFamily? Product,
@@ -24,6 +43,7 @@ public sealed record LoaderSessionSnapshot(
 
 public sealed class LoaderSessionController
 {
+    private readonly object inspectionOwnerToken = new();
     private ulong revision;
     private LoaderProductFamily? selectedProduct;
 
@@ -59,6 +79,49 @@ public sealed class LoaderSessionController
 
         selectedProduct = null;
         revision = checked(revision + 1);
+    }
+
+    public bool TryCreateOfflineBundleInspectionContext(
+        out LoaderBundleInspectionContext? context)
+    {
+        if (selectedProduct is null || revision == 0)
+        {
+            context = null;
+            return false;
+        }
+
+        context = new LoaderBundleInspectionContext(
+            inspectionOwnerToken,
+            revision,
+            selectedProduct.EngineeringKey);
+        return true;
+    }
+
+    public bool CanPublishOfflineBundleInspection(
+        LoaderBundleInspectionContext context,
+        FirmwareBundleCandidateResult result)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(result);
+
+        return selectedProduct is not null &&
+            ReferenceEquals(context.OwnerToken, inspectionOwnerToken) &&
+            ReferenceEquals(result.Context, context) &&
+            context.SessionRevision == revision &&
+            result.SessionRevision == revision &&
+            result.StructureVerified &&
+            result.ImageDigestVerified &&
+            result.SignaturePresent &&
+            string.Equals(
+                context.ProductKey,
+                selectedProduct.EngineeringKey,
+                StringComparison.Ordinal) &&
+            string.Equals(
+                result.ProductKey,
+                selectedProduct.EngineeringKey,
+                StringComparison.Ordinal) &&
+            result.ProductMatched &&
+            !result.AdmissionAllowed;
     }
 
     private LoaderSessionSnapshot CreateSnapshot()
