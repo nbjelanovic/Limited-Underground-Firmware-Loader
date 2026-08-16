@@ -32,6 +32,10 @@ Trail and Display are independent engineering projects. A shared customer utilit
 
 This builds the WPF application and runs the deterministic console acceptance suite without launching the window or accessing hardware.
 
+## License and branding
+
+The source code is licensed under the [Apache License 2.0](LICENSE). The license does not grant permission to use the Limited Underground names or associated branding as trademarks or to imply endorsement. See [BRANDING.md](BRANDING.md).
+
 ## Remaining gates
 
 1. Freeze a versioned provider lifecycle that supplies project-owned target rules and independently configured signer trust to the shared inspector.
