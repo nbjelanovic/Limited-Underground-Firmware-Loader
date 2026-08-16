@@ -1,0 +1,76 @@
+<Window x:Class="LimitedUnderground.FirmwareLoader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:automation="clr-namespace:System.Windows.Automation;assembly=PresentationCore"
+        Title="Limited Underground Firmware Loader — Preview"
+        Width="880"
+        Height="620"
+        MinWidth="720"
+        MinHeight="520"
+        Background="#C0C0C0"
+        FontFamily="Microsoft Sans Serif"
+        FontSize="13"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#000080" BorderBrush="#000000" BorderThickness="1" Padding="18,14">
+            <StackPanel>
+                <TextBlock Text="LIMITED UNDERGROUND" Foreground="#FFFFFF" FontWeight="Bold" FontSize="15" />
+                <TextBlock Text="Firmware Loader — Preview" Foreground="#FFFFFF" FontWeight="Bold" FontSize="25" Margin="0,4,0,0"
+                           automation:AutomationProperties.HeadingLevel="Level1" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Margin="0,14,0,14" Background="#D4D0C8" BorderBrush="#808080" BorderThickness="2" Padding="24">
+            <Grid>
+                <StackPanel x:Name="ProductChoicePanel">
+                    <TextBlock Text="Which Limited Underground system are you working with?" FontWeight="Bold" FontSize="21"
+                               automation:AutomationProperties.HeadingLevel="Level2" />
+                    <TextBlock Text="Your choice opens a product-scoped inspection session. It does not select a device or authorize firmware installation."
+                               TextWrapping="Wrap" Margin="0,8,0,22" MaxWidth="720" HorizontalAlignment="Left" />
+
+                    <UniformGrid Columns="2">
+                        <Button Tag="opentrail" Click="ProductChoiceButton_Click" Margin="0,0,8,0" Padding="18" MinHeight="150"
+                                automation:AutomationProperties.Name="Work with Limited Underground Trail">
+                            <StackPanel>
+                                <TextBlock Text="Limited Underground Trail" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" />
+                                <TextBlock Text="Trail communication devices and companion-system firmware." Margin="0,10,0,0" TextWrapping="Wrap" />
+                                <TextBlock Text="Provider migration pending" Margin="0,16,0,0" FontWeight="Bold" Foreground="#800000" />
+                            </StackPanel>
+                        </Button>
+                        <Button Tag="opengauge" Click="ProductChoiceButton_Click" Margin="8,0,0,0" Padding="18" MinHeight="150"
+                                automation:AutomationProperties.Name="Work with Limited Underground Display">
+                            <StackPanel>
+                                <TextBlock Text="Limited Underground Display" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" />
+                                <TextBlock Text="Vehicle display, gauge, and gateway firmware." Margin="0,10,0,0" TextWrapping="Wrap" />
+                                <TextBlock Text="Provider not implemented" Margin="0,16,0,0" FontWeight="Bold" Foreground="#800000" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
+                </StackPanel>
+
+                <StackPanel x:Name="SelectedProductPanel" Visibility="Collapsed">
+                    <TextBlock x:Name="SelectedProductName" FontWeight="Bold" FontSize="23"
+                               automation:AutomationProperties.HeadingLevel="Level2" />
+                    <TextBlock x:Name="SelectedProductDescription" TextWrapping="Wrap" Margin="0,8,0,0" />
+                    <Border Background="#FFFFE1" BorderBrush="#808000" BorderThickness="1" Padding="14" Margin="0,20,0,18">
+                        <TextBlock x:Name="SelectedProductStatus" TextWrapping="Wrap" />
+                    </Border>
+                    <Button x:Name="ContinueButton" Content="Continue to inspection" IsEnabled="False" Width="190" Height="36"
+                            HorizontalAlignment="Left" automation:AutomationProperties.HelpText="Unavailable until a reviewed product provider is migrated." />
+                    <Button Content="Back to system choice" Click="BackButton_Click" Width="170" Height="34" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Background="#FFFFE1" BorderBrush="#808000" BorderThickness="1" Padding="12">
+            <TextBlock Text="PREVIEW — INSPECTION ONLY. Firmware installation and recovery are not available."
+                       FontWeight="Bold" TextWrapping="Wrap" />
+        </Border>
+    </Grid>
+</Window>
