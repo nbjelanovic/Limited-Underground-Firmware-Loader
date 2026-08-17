@@ -18,7 +18,7 @@ Production registers one inspection-only provider and no signer-trust policy:
 - Trail activates provider key `opentrail`, lifecycle contract version `1`, and the exact `heltec_v4_bench` target rule from OpenTrail's public target contract at commit `a327104ac67a3f5918a8b0191c96dceb05b5399b`.
 - The pinned SHA-256 of the target-contract Git blob bytes is `ec818efab9a14ce4f0900068c9474acfe2577d74e2e39fa4850f3ff0567e9776`.
 - Display still has no loader provider or accepted target manifest.
-- Signer trust, cryptographic admission, file selection, device access, and firmware installation remain unavailable.
+- Signer trust, cryptographic admission, device access, and firmware installation remain unavailable.
 
 A provider registration is accepted only for one catalog product with an exact lowercase provider key and lifecycle contract version 1. A successful activation receives a nonzero generation and opaque lease. Switching products, returning to the chooser, or closing the application revokes and detaches that lease before closing the provider exactly once. Close/open failures, mismatched provider identities, reentrant callbacks, stale contexts, and owner disposal fail closed without exposing provider exception details or opening replacement authority.
 
@@ -26,7 +26,9 @@ Providers may supply only immutable, sanitized project-owned target rules. Signe
 
 The product-bound offline inspector accepts only a readable, seekable candidate stream containing exactly `manifest.json`, `image.bin`, and `manifest.sig`. An inspection context can be minted only for an active exact provider lease and binds the controller, session revision, activation token, provider generation and identity, target-rule revision, optional trust revision, and exact context object. The inspector verifies canonical manifest encoding, bounded metadata, image length and SHA-256, and a nonempty fixed-size signature field. The caller's stream position is restored on success and failure. Publication additionally requires an exact project-owned target rule. Signer trust and admission remain false.
 
-There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, trusted signer verification, bundle admission, or device-selection adapter in this repository. No file chooser is wired yet.
+Trail now exposes one local-file chooser for offline candidate inspection. It opens exactly one selected file read-only, adds nothing to recent-file history, retains no filename or path, and publishes only sanitized product, target, byte-count, structure, digest, signature-presence, trust, and admission fields. Results clear when the product session changes, the operator returns to the chooser, a new attempt begins, or the window closes. Display keeps this action disabled because it has no provider.
+
+There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, trusted signer verification, bundle admission, or device-selection adapter in this repository.
 
 ## Why a separate repository
 
@@ -38,7 +40,7 @@ Trail and Display are independent engineering projects. A shared customer utilit
 .\tools\Test-Loader.ps1
 ```
 
-This performs a clean warning-as-error Release build and runs 58 deterministic host groups without launching the window or accessing hardware.
+This performs a clean warning-as-error Release build and runs 63 deterministic host groups without launching the window or accessing hardware.
 
 ## License and branding
 
@@ -47,6 +49,6 @@ The source code is licensed under the [Apache License 2.0](LICENSE). The license
 ## Remaining gates
 
 1. Add a Display provider only after OpenGauge owns an accepted target manifest and compatibility boundary.
-2. Add a disabled-by-default file-selection surface only after its review keeps inspection separate from admission and installation.
+2. Define and validate the signed-release trust, revocation, and release-policy boundary before enabling admission.
 3. Add real signer verification, protected revocation, exact-device authority, writer, readback, boot confirmation, rollback, and recovery one gate at a time.
 4. Perform physical write and recovery acceptance independently for every claimed target before removing **Preview** or **inspection only**.

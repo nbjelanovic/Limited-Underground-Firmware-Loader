@@ -21,16 +21,18 @@ Status: public host-tested preview with the OpenTrail inspection provider active
 - Offline inspection contexts require an active provider lease and bind exact controller, session, activation, provider identity/generation, target-rule revision, optional trust revision, and context reference.
 - Publication additionally requires an exact case-sensitive target in the active project-owned rule set. Signer trust and admission remain false.
 - Stored and deflated ZIP entries are independently expansion-limited; exact maximum, maximum-plus-one, forged-size, oversized manifest/signature, stream-position restoration, cross-product, digest-mismatched, noncanonical, extra-entry, empty-signature, and unknown-product cases are covered.
-- Fifty-eight deterministic groups and source-policy checks pass without launching the UI or accessing hardware.
+- Trail exposes a one-file, read-only offline inspection workflow. It retains no local path, publishes sanitized fields only, clears stale results with the session lifecycle, and continues to report signer trust and installation admission as unavailable.
+- Display keeps offline inspection unavailable because it has no accepted provider or target manifest.
+- Sixty-three deterministic groups and source-policy checks pass without launching the UI or accessing hardware.
 - The independent public repository is published at <https://github.com/nbjelanovic/Limited-Underground-Firmware-Loader>; `main` is the default branch and GitHub detects Apache License 2.0.
 
 ## Not proven
 
 - Production registers no Display provider and no signer-trust policy.
 - No Display loader provider or accepted target manifest exists.
-- No UI file selection, trusted signer verification, bundle admission, device match, USB, serial, Bluetooth, writer, readback, boot confirmation, rollback, recovery, installer, release signing, or physical acceptance exists here.
+- No trusted signer verification, bundle admission, device match, USB, serial, Bluetooth, writer, readback, boot confirmation, rollback, recovery, installer, release signing, or physical acceptance exists here.
 - No signed binary release, update channel, or public firmware package is configured.
 
 ## Next gate
 
-Add the Display provider only after OpenGauge owns an accepted public target manifest and evidence boundary. A smaller optional UI increment may expose local file selection for offline inspection, but it must keep signer trust, admission, device access, and installation unavailable.
+Add the Display provider only after OpenGauge owns an accepted public target manifest and evidence boundary. Keep signer trust, admission, device access, and installation unavailable until their separate gates pass.

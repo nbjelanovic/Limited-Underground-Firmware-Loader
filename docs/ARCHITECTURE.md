@@ -25,7 +25,7 @@ Every current snapshot reports all operational capabilities false:
 - firmware writing; and
 - recovery.
 
-The disabled UI action is a visible statement of that boundary, not a simulated success path.
+These operational capabilities remain false. A separate `OfflineBundleInspectionAvailable` projection becomes true only for an active exact Trail provider lease; it grants access solely to the stream-based inspector and never implies signer, device, admission, or installation authority.
 
 ## Provider lifecycle version 1
 
@@ -60,7 +60,11 @@ Publication requires every binding to remain current, verified structure/digest/
 
 The archive may use stored or deflated entries. The entire candidate is limited to 20 MiB, and each entry is independently read with an exact maximum-plus-one ceiling: 4 KiB manifest, 16 MiB image, and 384-byte signature. The expanded byte count must equal ZIP metadata, so forged central-directory sizes fail closed. The caller's original stream position is restored in `finally` after success or failure.
 
-Inspection verifies structure, image length, SHA-256, and nonempty fixed-size signature presence. It has no file chooser, device input, admission output, or operation authority.
+Inspection verifies structure, image length, SHA-256, and nonempty fixed-size signature presence. It has no device input, admission output, or operation authority.
+
+## Local offline inspection surface
+
+The WPF composition root enables a single-file chooser only when `OfflineBundleInspectionAvailable` is true. The window disables recent-file registration, opens the selected file with `FileMode.Open`, `FileAccess.Read`, and `FileShare.Read`, and passes only the stream to `OfflineBundleInspectionWorkflow`. The workflow owns no path or filename field, catches malformed candidate data into fixed messages, rechecks current controller publication authority, and returns immutable sanitized display fields. The UI never displays the path or raw exception text and clears every rendered result on a new attempt, product change, chooser return, or close. Canceling the native picker leaves the prior inspected result unchanged because no new candidate was attempted.
 
 ## Write direction
 

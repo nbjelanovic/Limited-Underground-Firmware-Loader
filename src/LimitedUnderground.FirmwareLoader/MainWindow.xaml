@@ -27,6 +27,7 @@
         </Border>
 
         <Border Grid.Row="1" Margin="0,14,0,14" Background="#D4D0C8" BorderBrush="#808080" BorderThickness="2" Padding="24">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
             <Grid>
                 <StackPanel x:Name="ProductChoicePanel">
                     <TextBlock Text="Which Limited Underground system are you working with?" FontWeight="Bold" FontSize="21"
@@ -61,11 +62,29 @@
                     <Border Background="#FFFFE1" BorderBrush="#808000" BorderThickness="1" Padding="14" Margin="0,20,0,18">
                         <TextBlock x:Name="SelectedProductStatus" TextWrapping="Wrap" />
                     </Border>
-                    <Button x:Name="ContinueButton" Content="Continue to inspection" IsEnabled="False" Width="190" Height="36"
-                            HorizontalAlignment="Left" automation:AutomationProperties.HelpText="Unavailable until a reviewed product provider is migrated." />
+                    <Button x:Name="ContinueButton" Content="Choose bundle to inspect" IsEnabled="False" Click="ChooseBundleButton_Click"
+                            Width="200" Height="36" HorizontalAlignment="Left"
+                            automation:AutomationProperties.HelpText="Selects one local candidate archive for read-only offline inspection." />
+                    <Border x:Name="InspectionResultPanel" Visibility="Collapsed" Background="#FFFFFF" BorderBrush="#808080"
+                            BorderThickness="1" Padding="14" Margin="0,16,0,0">
+                        <StackPanel>
+                            <TextBlock x:Name="InspectionHeading" FontWeight="Bold" FontSize="17" Focusable="True"
+                                       automation:AutomationProperties.HeadingLevel="Level3" />
+                            <TextBlock x:Name="InspectionSummary" TextWrapping="Wrap" Margin="0,4,0,10" />
+                            <TextBlock x:Name="InspectionProduct" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionTarget" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionImageBytes" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionStructure" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionDigest" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionSignature" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionTrust" TextWrapping="Wrap" />
+                            <TextBlock x:Name="InspectionAdmission" TextWrapping="Wrap" FontWeight="Bold" Margin="0,6,0,0" />
+                        </StackPanel>
+                    </Border>
                     <Button Content="Back to system choice" Click="BackButton_Click" Width="170" Height="34" HorizontalAlignment="Left" Margin="0,14,0,0" />
                 </StackPanel>
             </Grid>
+            </ScrollViewer>
         </Border>
 
         <Border Grid.Row="2" Background="#FFFFE1" BorderBrush="#808000" BorderThickness="1" Padding="12">

@@ -65,6 +65,10 @@ public sealed record LoaderSessionSnapshot(
     public bool ConnectedDeviceInspectionAvailable =>
         Product?.ConnectedDeviceInspectionAvailable ?? false;
 
+    public bool OfflineBundleInspectionAvailable =>
+        ProviderActive &&
+        string.Equals(Product?.EngineeringKey, "opentrail", StringComparison.Ordinal);
+
     public bool FirmwareBundleSelectionAvailable =>
         Product?.FirmwareBundleSelectionAvailable ?? false;
 

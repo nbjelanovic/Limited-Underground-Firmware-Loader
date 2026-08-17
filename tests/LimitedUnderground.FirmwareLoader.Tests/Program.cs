@@ -43,6 +43,7 @@ var tests = new (string Name, Action Run)[]
     ("cross-controller result reuse is rejected", CrossControllerResultReuseIsRejected),
 }
 .Concat(ProviderLifecycleTests.All)
+.Concat(OfflineBundleInspectionWorkflowTests.All)
 .Concat(OpenTrailInspectionProviderTests.All)
 .ToArray();
 
@@ -161,6 +162,15 @@ void UiExposesChooserAndDisabledOperation()
         "src",
         "LimitedUnderground.FirmwareLoader",
         "MainWindow.xaml.cs"));
+    Require(xaml.Contains("ChooseBundleButton_Click", StringComparison.Ordinal), "inspection chooser action");
+    Require(xaml.Contains("InspectionResultPanel", StringComparison.Ordinal), "inspection result panel");
+    Require(codeBehind.Contains("AddToRecent = false", StringComparison.Ordinal), "recent files disabled");
+    Require(codeBehind.Contains("FileMode.Open", StringComparison.Ordinal), "read-only file open mode");
+    Require(codeBehind.Contains("FileAccess.Read", StringComparison.Ordinal), "read-only file access");
+    Require(codeBehind.Contains("FileShare.Read", StringComparison.Ordinal), "read-only file sharing");
+    Require(codeBehind.Contains("ClearInspection();", StringComparison.Ordinal), "result clearing hook");
+    Require(!xaml.Contains("File path", StringComparison.OrdinalIgnoreCase), "path omitted from UI");
+    Require(!codeBehind.Contains("Exception.Message", StringComparison.Ordinal), "exception text withheld");
     Require(codeBehind.Contains("session.Dispose();", StringComparison.Ordinal), "window closes session");
 }
 
