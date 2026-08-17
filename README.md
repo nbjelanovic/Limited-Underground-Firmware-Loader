@@ -11,20 +11,24 @@ The first screen asks which system the operator is working with. That choice ope
 
 ## Current increment
 
-The repository contains a buildable .NET 8 WPF shell and a deterministic product-selection core. The shell presents the exact two owner-approved product choices, keeps the full Limited Underground identity visible, and clearly states that firmware installation is unavailable.
+The repository contains a buildable .NET 8 WPF shell, a deterministic product-selection core, and the host-tested version 1 product-provider lifecycle. The shell presents the exact two owner-approved product choices, keeps the full Limited Underground identity visible, and clearly states that firmware installation is unavailable.
 
-Both providers are deliberately unavailable in this new shared shell:
+Production provider and signer-trust registries are deliberately empty:
 
 - Trail's accepted inspection-only implementation still lives in the OpenTrail repository and has not been migrated.
-- Display has no loader provider or target manifest yet.
+- Display has no loader provider or accepted target manifest yet.
 
-A product-bound offline inspector now accepts only a readable, seekable candidate stream containing exactly `manifest.json`, `image.bin`, and `manifest.sig`. Its context is minted with an opaque per-controller identity and the currently selected product-session revision; switching products, returning to the chooser, or presenting the result to another controller makes it stale. It verifies canonical manifest encoding, the exact `opentrail` or `opengauge` product key, bounded target metadata, image length and SHA-256, and a nonempty fixed-size signature field. Stored or deflated entries are permitted only inside the 20 MiB archive limit, and every decompressed entry is independently read through its exact maximum-plus-one boundary. The caller's stream position is restored on success and failure. The inspector does not trust the signature, admit a release, select a device, or enable the disabled UI operation. No file chooser is wired yet.
+A provider registration is accepted only for one catalog product with an exact lowercase provider key and lifecycle contract version 1. A successful activation receives a nonzero generation and opaque lease. Switching products, returning to the chooser, or closing the application revokes and detaches that lease before closing the provider exactly once. Close/open failures, mismatched provider identities, reentrant callbacks, stale contexts, and owner disposal fail closed without exposing provider exception details or opening replacement authority.
 
-There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, trusted signer, bundle-admission, or device-selection adapter in this repository.
+Providers may supply only immutable, sanitized project-owned target rules. Signer trust is a separate application-owned registry bound to the exact product, provider, and contract version. A provider cannot declare a signer trusted or allow admission. Merely configuring signer metadata does not perform cryptographic verification.
+
+The product-bound offline inspector accepts only a readable, seekable candidate stream containing exactly `manifest.json`, `image.bin`, and `manifest.sig`. An inspection context can be minted only for an active exact provider lease and binds the controller, session revision, activation token, provider generation and identity, target-rule revision, optional trust revision, and exact context object. The inspector verifies canonical manifest encoding, bounded metadata, image length and SHA-256, and a nonempty fixed-size signature field. The caller's stream position is restored on success and failure. Publication additionally requires an exact project-owned target rule. Signer trust and admission remain false.
+
+There is no USB, serial, Bluetooth, WebUSB, esptool, erase, write, reset, recovery, trusted signer verification, bundle admission, or device-selection adapter in this repository. No file chooser is wired yet.
 
 ## Why a separate repository
 
-Trail and Display are independent engineering projects. A shared customer utility must not make either repository own the other project's source or evidence. This repository will own only the common application shell, session authority, and provider boundary. Each product will continue to own its exact target manifests, artifacts, compatibility proof, and recovery rules.
+Trail and Display are independent engineering projects. A shared customer utility must not make either repository own the other project's source or evidence. This repository owns only the common application shell, session authority, provider lifecycle, and inspection boundary. Each product continues to own its exact target manifests, artifacts, compatibility proof, and recovery rules.
 
 ## Validate
 
@@ -32,7 +36,7 @@ Trail and Display are independent engineering projects. A shared customer utilit
 .\tools\Test-Loader.ps1
 ```
 
-This builds the WPF application and runs the deterministic console acceptance suite without launching the window or accessing hardware.
+This performs a clean warning-as-error Release build and runs 52 deterministic host groups without launching the window or accessing hardware.
 
 ## License and branding
 
@@ -40,8 +44,7 @@ The source code is licensed under the [Apache License 2.0](LICENSE). The license
 
 ## Remaining gates
 
-1. Freeze a versioned provider lifecycle that supplies project-owned target rules and independently configured signer trust to the shared inspector.
-2. Migrate the existing Trail inspection provider without weakening its privacy or fail-closed rules.
-3. Add a Display provider only after OpenGauge owns an accepted target manifest and compatibility boundary.
-4. Add signer trust, protected revocation, exact-device authority, writer, readback, boot confirmation, rollback, and recovery one gate at a time.
-5. Perform physical write and recovery acceptance independently for every claimed target before removing **Preview** or **inspection only**.
+1. Migrate the existing Trail inspection provider without weakening its privacy or fail-closed rules.
+2. Add a Display provider only after OpenGauge owns an accepted target manifest and compatibility boundary.
+3. Add real signer verification, protected revocation, exact-device authority, writer, readback, boot confirmation, rollback, and recovery one gate at a time.
+4. Perform physical write and recovery acceptance independently for every claimed target before removing **Preview** or **inspection only**.

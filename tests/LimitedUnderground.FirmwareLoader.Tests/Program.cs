@@ -41,7 +41,9 @@ var tests = new (string Name, Action Run)[]
     ("oversized manifest and signature are rejected", OversizedManifestAndSignatureAreRejected),
     ("inspection authority cannot be fabricated", InspectionAuthorityCannotBeFabricated),
     ("cross-controller result reuse is rejected", CrossControllerResultReuseIsRejected),
-};
+}
+.Concat(ProviderLifecycleTests.All)
+.ToArray();
 
 foreach (var test in tests)
 {
@@ -152,6 +154,13 @@ void UiExposesChooserAndDisabledOperation()
     Require(xaml.Contains("x:Name=\"ContinueButton\"", StringComparison.Ordinal), "continue button");
     Require(xaml.Contains("IsEnabled=\"False\"", StringComparison.Ordinal), "disabled continue");
     Require(xaml.Contains("Firmware installation and recovery are not available", StringComparison.Ordinal), "safety footer");
+
+    var codeBehind = File.ReadAllText(Path.Combine(
+        repositoryRoot,
+        "src",
+        "LimitedUnderground.FirmwareLoader",
+        "MainWindow.xaml.cs"));
+    Require(codeBehind.Contains("session.Dispose();", StringComparison.Ordinal), "window closes session");
 }
 
 void SourceContainsNoHardwareMutationAdapter()
@@ -439,15 +448,16 @@ void CrossControllerResultReuseIsRejected()
     var result = FirmwareBundleCandidateInspector.Inspect(bundle, context);
     Require(firstController.CanPublishOfflineBundleInspection(context, result), "first controller publication");
 
-    var secondController = new LoaderSessionController();
+    var secondController = ProviderLifecycleTests.CreateController("opentrail");
     Require(secondController.SelectProduct("opentrail"), "second controller select");
+    Require(secondController.Snapshot.ProviderActive, "second controller provider active");
     Require(secondController.Snapshot.Revision == context.SessionRevision, "numeric revision collision prerequisite");
     Require(!secondController.CanPublishOfflineBundleInspection(context, result), "cross-controller publication");
 }
 static (LoaderSessionController Controller, LoaderBundleInspectionContext Context)
     CreateInspectionSession(string productKey)
 {
-    var controller = new LoaderSessionController();
+    var controller = ProviderLifecycleTests.CreateController(productKey);
     Require(controller.SelectProduct(productKey), "select inspection product " + productKey);
     Require(controller.TryCreateOfflineBundleInspectionContext(out var context), "create inspection context " + productKey);
     return (controller, context ?? throw new InvalidOperationException("Inspection context missing."));

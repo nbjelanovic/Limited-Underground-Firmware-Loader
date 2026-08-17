@@ -14,6 +14,12 @@ public partial class MainWindow : Window
         PublishSession();
     }
 
+    protected override void OnClosed(EventArgs eventArgs)
+    {
+        session.Dispose();
+        base.OnClosed(eventArgs);
+    }
+
     private void ProductChoiceButton_Click(object sender, RoutedEventArgs eventArgs)
     {
         _ = eventArgs;
@@ -55,8 +61,7 @@ public partial class MainWindow : Window
 
         SelectedProductName.Text = snapshot.Product.DisplayName;
         SelectedProductDescription.Text = snapshot.Product.Description;
-        SelectedProductStatus.Text = snapshot.Product.ProviderStatus +
-            " Firmware installation remains disabled.";
+        SelectedProductStatus.Text = snapshot.Status;
         ContinueButton.IsEnabled = snapshot.ConnectedDeviceInspectionAvailable;
     }
 }
