@@ -40,7 +40,7 @@
                             <StackPanel>
                                 <TextBlock Text="Limited Underground Trail" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" />
                                 <TextBlock Text="Trail communication devices and companion-system firmware." Margin="0,10,0,0" TextWrapping="Wrap" />
-                                <TextBlock Text="Provider migration pending" Margin="0,16,0,0" FontWeight="Bold" Foreground="#800000" />
+                                <TextBlock Text="Offline inspection rules available" Margin="0,16,0,0" FontWeight="Bold" Foreground="#006400" />
                             </StackPanel>
                         </Button>
                         <Button Tag="opengauge" Click="ProductChoiceButton_Click" Margin="8,0,0,0" Padding="18" MinHeight="150"

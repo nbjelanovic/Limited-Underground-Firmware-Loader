@@ -5,7 +5,9 @@ namespace LimitedUnderground.FirmwareLoader;
 
 public partial class MainWindow : Window
 {
-    private readonly LoaderSessionController session = new();
+    private readonly LoaderSessionController session = new(
+        LoaderProductionProviders.Factories,
+        LoaderProductionProviders.SignerTrustPolicies);
 
     public MainWindow()
     {

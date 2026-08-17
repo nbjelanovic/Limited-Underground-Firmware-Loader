@@ -10,7 +10,7 @@ This project is the shared customer-tool boundary. It does not own OpenTrail or 
 
 | Engineering key | Public working name | Current production provider state |
 | --- | --- | --- |
-| `opentrail` | Limited Underground Trail | Existing inspection provider not migrated |
+| `opentrail` | Limited Underground Trail | Lifecycle-v1 offline-inspection provider active for exact `heltec_v4_bench` target rules |
 | `opengauge` | Limited Underground Display | Provider and accepted target manifest do not exist |
 
 The display names are presentation only. They are not wire values, schema keys, cryptographic context, or hardware identifiers.
@@ -46,7 +46,9 @@ Providers expose only their exact open context, immutable project-owned target r
 
 Target rules and signer trust are independent authorities. Rules bind exact target keys to a project-owned manifest identity and source revision. A separately injected signer policy may identify signer IDs and configured public-key fingerprints, but configuration alone never sets `SignerTrusted` or `AdmissionAllowed`; real cryptographic verification and revocation are later gates.
 
-Production currently registers no providers and no signer trust. The lifecycle is proven only with deterministic fake providers.
+Production registers one provider factory for product/provider key `opentrail` and contract version `1`. Its immutable rule set contains only `heltec_v4_bench`; both the rule identity and source revision pin SHA-256 `ec818efab9a14ce4f0900068c9474acfe2577d74e2e39fa4850f3ff0567e9776` for the Git blob bytes of OpenTrail's public target contract at commit `a327104ac67a3f5918a8b0191c96dceb05b5399b`. The provider owns no file, device, transport, signer, admission, or mutation adapter and closes without external work.
+
+Production signer trust remains empty. Display remains providerless. The default controller constructor also remains empty for isolated consumers and lifecycle tests; the WPF composition root explicitly injects the production registry.
 
 ## Offline bundle-candidate boundary
 

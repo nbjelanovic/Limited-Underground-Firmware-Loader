@@ -27,7 +27,7 @@ public static class LoaderProductCatalog
         EngineeringKey: "opentrail",
         DisplayName: "Limited Underground Trail",
         Description: "Trail communication devices and companion-system firmware.",
-        ProviderStatus: "The existing Trail inspection provider has not yet been migrated into this shared application.");
+        ProviderStatus: "Trail's public target rules are available for offline inspection. Signer trust and firmware installation remain unavailable.");
 
     public static LoaderProductFamily Display { get; } = new(
         EngineeringKey: "opengauge",

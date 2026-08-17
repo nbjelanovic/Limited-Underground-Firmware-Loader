@@ -43,6 +43,7 @@ var tests = new (string Name, Action Run)[]
     ("cross-controller result reuse is rejected", CrossControllerResultReuseIsRejected),
 }
 .Concat(ProviderLifecycleTests.All)
+.Concat(OpenTrailInspectionProviderTests.All)
 .ToArray();
 
 foreach (var test in tests)
